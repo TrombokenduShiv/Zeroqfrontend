@@ -103,32 +103,42 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-rose-50/10">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-black/40 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <motion.header 
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="sticky top-0 z-50 bg-white/70 backdrop-blur-2xl border-b border-stone-200/50"
+      >
+        <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <button onClick={onBack} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                <span className="text-xl">🧠</span>
+            <button onClick={onBack} className="flex items-center gap-3 group">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-400 to-amber-400 flex items-center justify-center shadow-lg shadow-rose-300/40 group-hover:shadow-rose-400/60 transition-all duration-500 group-hover:scale-105">
+                <span className="text-2xl">🧠</span>
               </div>
-              <span className="text-2xl font-bold text-white">ZeroQ</span>
+              <span className="text-3xl font-light text-stone-800 tracking-tight">ZeroQ</span>
             </button>
 
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl border border-purple-500/30">
-                <Coins className="w-5 h-5 text-yellow-400" />
-                <span className="text-white font-semibold">{tokens.toFixed(1)} ZQX</span>
+              <div className="flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-amber-100/60 to-rose-100/60 backdrop-blur-md rounded-full border border-amber-200/50 shadow-sm">
+                <Coins className="w-5 h-5 text-amber-600" />
+                <span className="text-stone-800 font-light tracking-wide">{tokens.toFixed(1)} <span className="text-amber-600">ZQX</span></span>
               </div>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-blue-600" />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-300 to-amber-300 shadow-lg" />
             </div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Tabs */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="flex gap-4 bg-white/5 p-2 rounded-2xl backdrop-blur-sm border border-white/10">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="flex gap-3 bg-white/60 p-2 rounded-3xl backdrop-blur-md border border-stone-200/50 shadow-lg"
+        >
           {[
             { id: 'join', label: 'Join Queue', icon: Search },
             { id: 'active', label: 'Active Queue', icon: Clock },
@@ -137,17 +147,17 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-2 px-8 py-4 rounded-2xl transition-all duration-500 ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-rose-400 to-amber-400 text-white shadow-xl shadow-rose-300/40 scale-[1.02]'
+                  : 'text-stone-500 hover:text-stone-700 hover:bg-white/40'
               }`}
             >
               <tab.icon className="w-5 h-5" />
-              <span className="font-semibold">{tab.label}</span>
+              <span className="font-light tracking-wide">{tab.label}</span>
             </button>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Content */}
@@ -156,20 +166,21 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
           {activeTab === 'join' && (
             <motion.div
               key="join"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-6"
             >
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
                 <input
                   type="text"
                   placeholder="Search queues, organizations, or categories..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50"
+                  className="w-full pl-14 pr-6 py-5 bg-white/70 backdrop-blur-md border border-stone-200/50 rounded-3xl text-stone-800 placeholder:text-stone-400 focus:outline-none focus:border-rose-300 focus:shadow-lg transition-all duration-500 font-light"
                 />
               </div>
 
@@ -178,47 +189,47 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
                 {filteredQueues.map((queue, index) => (
                   <motion.div
                     key={queue.id}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="group relative p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                    transition={{ delay: index * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="group relative p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 hover:border-rose-200 hover:shadow-2xl hover:shadow-stone-300/20 transition-all duration-700 hover:-translate-y-1"
                   >
-                    <div className="flex justify-between items-start mb-4">
+                    <div className="flex justify-between items-start mb-6">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Building2 className="w-4 h-4 text-purple-400" />
-                          <span className="text-sm text-slate-400">{queue.organization}</span>
+                        <div className="flex items-center gap-2 mb-3">
+                          <Building2 className="w-4 h-4 text-rose-400" />
+                          <span className="text-sm text-stone-500 font-light">{queue.organization}</span>
                         </div>
-                        <h3 className="text-xl font-semibold text-white mb-2">{queue.name}</h3>
+                        <h3 className="text-2xl font-light text-stone-800 mb-2">{queue.name}</h3>
                       </div>
-                      <div className="px-3 py-1 bg-purple-600/20 rounded-lg text-sm text-purple-300 border border-purple-500/30">
+                      <div className="px-4 py-2 bg-rose-100/60 backdrop-blur-sm rounded-2xl text-sm text-rose-600 border border-rose-200/50 font-light">
                         {queue.category}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-slate-400 text-sm">
+                    <div className="grid grid-cols-2 gap-6 mb-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-stone-500 text-sm font-light">
                           <Clock className="w-4 h-4" />
                           <span>Current Wait</span>
                         </div>
-                        <div className="text-2xl font-bold text-purple-400">{queue.currentWait} min</div>
+                        <div className="text-3xl font-light text-rose-500">{queue.currentWait} min</div>
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-slate-400 text-sm">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-stone-500 text-sm font-light">
                           <Users className="w-4 h-4" />
                           <span>People Ahead</span>
                         </div>
-                        <div className="text-2xl font-bold text-blue-400">{queue.peopleAhead}</div>
+                        <div className="text-3xl font-light text-amber-500">{queue.peopleAhead}</div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/10">
-                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <div className="flex items-center justify-between mb-6 pb-6 border-b border-stone-200/50">
+                      <div className="flex items-center gap-2 text-sm text-stone-500 font-light">
                         <MapPin className="w-4 h-4" />
                         <span>{queue.location}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                      <div className="flex items-center gap-2 text-sm text-stone-500 font-light">
                         <TrendingUp className="w-4 h-4" />
                         <span>Peak: {queue.peakHours}</span>
                       </div>
@@ -226,7 +237,7 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
 
                     <button
                       onClick={() => handleJoinQueue(queue)}
-                      className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white rounded-xl transition-all duration-300 font-semibold shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50"
+                      className="w-full py-4 bg-gradient-to-r from-rose-400 to-amber-400 hover:from-rose-500 hover:to-amber-500 text-white rounded-2xl transition-all duration-700 font-light tracking-wide shadow-lg shadow-rose-300/30 hover:shadow-rose-400/50 hover:scale-[1.02]"
                     >
                       Join Queue
                     </button>
@@ -239,106 +250,128 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
           {activeTab === 'active' && (
             <motion.div
               key="active"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-6"
             >
               {joined && selectedQueue ? (
                 <div className="max-w-2xl mx-auto space-y-6">
                   {/* Status Card */}
-                  <div className="relative p-8 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm rounded-3xl border border-purple-500/30 overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(147,51,234,0.1),transparent_50%)]" />
+                  <motion.div 
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative p-10 bg-gradient-to-br from-white/80 via-rose-50/40 to-amber-50/40 backdrop-blur-xl rounded-[2.5rem] border border-white/60 overflow-hidden shadow-2xl"
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(251,207,232,0.2),transparent_60%)]" />
                     
-                    <div className="relative z-10 space-y-6">
+                    <div className="relative z-10 space-y-8">
                       <div className="text-center">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/30 rounded-full mb-4">
-                          <CheckCircle2 className="w-4 h-4 text-green-400" />
-                          <span className="text-green-300 text-sm font-semibold">In Queue</span>
+                        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-100/60 backdrop-blur-md border border-emerald-200/50 rounded-full mb-6 shadow-sm">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                          <span className="text-emerald-700 text-sm font-light tracking-wide">In Queue</span>
                         </div>
-                        <h2 className="text-3xl font-bold text-white mb-2">{selectedQueue.name}</h2>
-                        <p className="text-slate-300">{selectedQueue.organization}</p>
+                        <h2 className="text-4xl font-light text-stone-800 mb-3">{selectedQueue.name}</h2>
+                        <p className="text-stone-600 font-light">{selectedQueue.organization}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-6">
-                        <div className="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
-                          <div className="text-5xl font-bold text-purple-400 mb-2">{position}</div>
-                          <div className="text-slate-400">Position in Queue</div>
+                        <div className="text-center p-8 bg-white/60 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg">
+                          <div className="text-6xl font-light text-rose-500 mb-3">{position}</div>
+                          <div className="text-stone-600 font-light">Position in Queue</div>
                         </div>
-                        <div className="text-center p-6 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
-                          <div className="text-5xl font-bold text-blue-400 mb-2">{eta}</div>
-                          <div className="text-slate-400">Minutes Remaining</div>
+                        <div className="text-center p-8 bg-white/60 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg">
+                          <div className="text-6xl font-light text-amber-500 mb-3">{eta}</div>
+                          <div className="text-stone-600 font-light">Minutes Remaining</div>
                         </div>
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="space-y-2">
-                        <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                      <div className="space-y-3">
+                        <div className="h-3 bg-stone-200/50 rounded-full overflow-hidden backdrop-blur-sm">
                           <motion.div
-                            className="h-full bg-gradient-to-r from-purple-600 to-blue-600"
+                            className="h-full bg-gradient-to-r from-rose-400 to-amber-400 rounded-full"
                             initial={{ width: '0%' }}
                             animate={{ width: `${((selectedQueue.peopleAhead - position) / selectedQueue.peopleAhead) * 100}%` }}
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                           />
                         </div>
-                        <div className="flex justify-between text-sm text-slate-400">
+                        <div className="flex justify-between text-sm text-stone-500 font-light">
                           <span>Joined</span>
                           <span>Your Turn</span>
                         </div>
                       </div>
 
                       {/* Earning Tokens */}
-                      <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+                      <div className="p-6 bg-amber-100/40 backdrop-blur-md border border-amber-200/50 rounded-3xl">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                              <Coins className="w-5 h-5 text-yellow-400" />
+                          <div className="flex items-center gap-4">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-300 to-amber-400 flex items-center justify-center shadow-lg">
+                              <Coins className="w-7 h-7 text-white" />
                             </div>
                             <div>
-                              <div className="text-white font-semibold">Earning Rewards</div>
-                              <div className="text-sm text-slate-400">+0.5 ZQX per 5 minutes</div>
+                              <div className="text-stone-800 font-light text-lg">Earning Rewards</div>
+                              <div className="text-sm text-stone-600 font-light">+0.5 ZQX per 5 minutes</div>
                             </div>
                           </div>
-                          <div className="text-yellow-400 font-bold text-xl">+{((selectedQueue.currentWait - eta) * 0.5 / 5).toFixed(1)}</div>
+                          <div className="text-amber-600 text-2xl font-light">+{((selectedQueue.currentWait - eta) * 0.5 / 5).toFixed(1)}</div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Live Updates */}
-                  <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                    <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+                  >
+                    <h3 className="text-stone-800 font-light text-xl mb-6 flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
                       Live Updates
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       {[
                         { time: 'Just now', text: 'Position updated: You moved up 1 spot' },
                         { time: '2 min ago', text: 'ETA recalculated based on service speed' },
                         { time: '5 min ago', text: 'Earned +0.5 ZQX tokens for waiting' },
                       ].map((update, i) => (
-                        <div key={i} className="flex items-start gap-3 text-sm">
-                          <div className="text-slate-500 min-w-[80px]">{update.time}</div>
-                          <div className="text-slate-300">{update.text}</div>
-                        </div>
+                        <motion.div 
+                          key={i}
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                          className="flex items-start gap-4 text-sm font-light"
+                        >
+                          <div className="text-stone-400 min-w-[80px]">{update.time}</div>
+                          <div className="text-stone-700">{update.text}</div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               ) : (
-                <div className="text-center py-20">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-white/5 flex items-center justify-center">
-                    <Clock className="w-10 h-10 text-slate-500" />
+                <motion.div 
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-center py-32"
+                >
+                  <div className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-white/70 backdrop-blur-md flex items-center justify-center border border-stone-200/50 shadow-lg">
+                    <Clock className="w-12 h-12 text-stone-400" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">No Active Queue</h3>
-                  <p className="text-slate-400 mb-6">Join a queue to start tracking your wait time</p>
+                  <h3 className="text-3xl font-light text-stone-800 mb-3">No Active Queue</h3>
+                  <p className="text-stone-600 mb-8 font-light">Join a queue to start tracking your wait time</p>
                   <button
                     onClick={() => setActiveTab('join')}
-                    className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl"
+                    className="px-10 py-4 bg-gradient-to-r from-rose-400 to-amber-400 hover:from-rose-500 hover:to-amber-500 text-white rounded-full transition-all duration-700 shadow-lg shadow-rose-300/30 hover:shadow-rose-400/50 font-light tracking-wide hover:scale-105"
                   >
                     Browse Queues
                   </button>
-                </div>
+                </motion.div>
               )}
             </motion.div>
           )}
@@ -346,67 +379,89 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
           {activeTab === 'rewards' && (
             <motion.div
               key="rewards"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="max-w-4xl mx-auto space-y-6"
             >
               {/* Token Balance */}
-              <div className="relative p-8 bg-gradient-to-br from-yellow-600/20 to-purple-600/20 backdrop-blur-sm rounded-3xl border border-yellow-500/30 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(234,179,8,0.1),transparent_50%)]" />
+              <motion.div 
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="relative p-10 bg-gradient-to-br from-white/80 via-amber-50/50 to-rose-50/40 backdrop-blur-xl rounded-[2.5rem] border border-white/60 overflow-hidden shadow-2xl"
+              >
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(252,211,77,0.2),transparent_60%)]" />
                 
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-between mb-8">
                     <div>
-                      <div className="text-slate-400 mb-2">Total Balance</div>
-                      <div className="text-6xl font-bold text-white">{tokens.toFixed(1)} <span className="text-3xl text-yellow-400">ZQX</span></div>
+                      <div className="text-stone-500 mb-3 font-light">Total Balance</div>
+                      <div className="text-7xl font-light text-stone-800">{tokens.toFixed(1)} <span className="text-4xl text-amber-500">ZQX</span></div>
                     </div>
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center shadow-lg shadow-yellow-500/50">
-                      <Coins className="w-10 h-10 text-white" />
+                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-2xl shadow-amber-400/50">
+                      <Coins className="w-12 h-12 text-white" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="p-4 bg-white/5 rounded-xl backdrop-blur-sm">
-                      <div className="text-slate-400 text-sm mb-1">Today</div>
-                      <div className="text-2xl font-bold text-green-400">+12.5</div>
+                    <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-stone-200/50 shadow-lg">
+                      <div className="text-stone-500 text-sm mb-2 font-light">Today</div>
+                      <div className="text-3xl font-light text-emerald-500">+12.5</div>
                     </div>
-                    <div className="p-4 bg-white/5 rounded-xl backdrop-blur-sm">
-                      <div className="text-slate-400 text-sm mb-1">This Week</div>
-                      <div className="text-2xl font-bold text-blue-400">+47.0</div>
+                    <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-stone-200/50 shadow-lg">
+                      <div className="text-stone-500 text-sm mb-2 font-light">This Week</div>
+                      <div className="text-3xl font-light text-indigo-500">+47.0</div>
                     </div>
-                    <div className="p-4 bg-white/5 rounded-xl backdrop-blur-sm">
-                      <div className="text-slate-400 text-sm mb-1">All Time</div>
-                      <div className="text-2xl font-bold text-purple-400">{tokens.toFixed(1)}</div>
+                    <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-stone-200/50 shadow-lg">
+                      <div className="text-stone-500 text-sm mb-2 font-light">All Time</div>
+                      <div className="text-3xl font-light text-rose-500">{tokens.toFixed(1)}</div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Earning Activities */}
-              <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-6">Earning Activities</h3>
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+              >
+                <h3 className="text-2xl font-light text-stone-800 mb-8">Earning Activities</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {[
-                    { icon: '🎯', action: 'Join Queue', reward: '+1 ZQX', color: 'purple' },
-                    { icon: '⏱️', action: 'Wait in Queue (per 5 min)', reward: '+0.5 ZQX', color: 'blue' },
-                    { icon: '⭐', action: 'Provide Feedback', reward: '+2 ZQX', color: 'yellow' },
-                    { icon: '🤝', action: 'Refer Organization', reward: '+5 ZQX', color: 'green' },
+                    { icon: '🎯', action: 'Join Queue', reward: '+1 ZQX', color: 'rose' },
+                    { icon: '⏱️', action: 'Wait in Queue (per 5 min)', reward: '+0.5 ZQX', color: 'amber' },
+                    { icon: '⭐', action: 'Provide Feedback', reward: '+2 ZQX', color: 'indigo' },
+                    { icon: '🤝', action: 'Refer Organization', reward: '+5 ZQX', color: 'emerald' },
                   ].map((activity, i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
-                      <div className="text-3xl">{activity.icon}</div>
+                    <motion.div 
+                      key={i}
+                      initial={{ scale: 0.95, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex items-center gap-5 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:border-rose-200 transition-all duration-500 hover:shadow-lg"
+                    >
+                      <div className="text-4xl">{activity.icon}</div>
                       <div className="flex-1">
-                        <div className="text-white font-semibold">{activity.action}</div>
-                        <div className={`text-${activity.color}-400 font-bold`}>{activity.reward}</div>
+                        <div className="text-stone-800 font-light mb-1">{activity.action}</div>
+                        <div className={`text-${activity.color}-500 font-light text-lg`}>{activity.reward}</div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Recent Transactions */}
-              <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-6">Recent Transactions</h3>
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+              >
+                <h3 className="text-2xl font-light text-stone-800 mb-8">Recent Transactions</h3>
                 <div className="space-y-3">
                   {[
                     { type: 'Earned', amount: '+2.0', desc: 'Provided feedback - City Hospital', time: '10 min ago' },
@@ -414,25 +469,31 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
                     { type: 'Earned', amount: '+0.5', desc: 'Wait time reward', time: '1 hour ago' },
                     { type: 'Redeemed', amount: '-10.0', desc: 'Coupon redemption', time: '2 days ago' },
                   ].map((tx, i) => (
-                    <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                          tx.type === 'Earned' ? 'bg-green-500/20' : 'bg-red-500/20'
+                    <motion.div 
+                      key={i}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex items-center justify-between p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:shadow-lg transition-all duration-500"
+                    >
+                      <div className="flex items-center gap-5">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${
+                          tx.type === 'Earned' ? 'bg-gradient-to-br from-emerald-300 to-emerald-400' : 'bg-gradient-to-br from-rose-300 to-rose-400'
                         }`}>
-                          {tx.type === 'Earned' ? <Star className="w-5 h-5 text-green-400" /> : <Coins className="w-5 h-5 text-red-400" />}
+                          {tx.type === 'Earned' ? <Star className="w-7 h-7 text-white" /> : <Coins className="w-7 h-7 text-white" />}
                         </div>
                         <div>
-                          <div className="text-white font-semibold">{tx.desc}</div>
-                          <div className="text-sm text-slate-400">{tx.time}</div>
+                          <div className="text-stone-800 font-light mb-1">{tx.desc}</div>
+                          <div className="text-sm text-stone-500 font-light">{tx.time}</div>
                         </div>
                       </div>
-                      <div className={`text-xl font-bold ${tx.type === 'Earned' ? 'text-green-400' : 'text-red-400'}`}>
+                      <div className={`text-2xl font-light ${tx.type === 'Earned' ? 'text-emerald-500' : 'text-rose-500'}`}>
                         {tx.amount} ZQX
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

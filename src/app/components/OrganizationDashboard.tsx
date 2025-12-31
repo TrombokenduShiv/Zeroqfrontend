@@ -44,47 +44,57 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'critical':
-        return 'red';
+        return { bg: 'rose', text: 'rose', dot: 'bg-rose-500' };
       case 'busy':
-        return 'yellow';
+        return { bg: 'amber', text: 'amber', dot: 'bg-amber-500' };
       case 'normal':
-        return 'blue';
+        return { bg: 'indigo', text: 'indigo', dot: 'bg-indigo-500' };
       case 'low':
-        return 'green';
+        return { bg: 'emerald', text: 'emerald', dot: 'bg-emerald-500' };
       default:
-        return 'gray';
+        return { bg: 'stone', text: 'stone', dot: 'bg-stone-500' };
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-indigo-50/20 to-amber-50/10">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-black/40 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="sticky top-0 z-50 bg-white/70 backdrop-blur-2xl border-b border-stone-200/50"
+      >
+        <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <button onClick={onBack} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                <span className="text-xl">🧠</span>
+            <button onClick={onBack} className="flex items-center gap-3 group">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-400 to-amber-400 flex items-center justify-center shadow-lg shadow-indigo-300/40 group-hover:shadow-indigo-400/60 transition-all duration-500 group-hover:scale-105">
+                <span className="text-2xl">🧠</span>
               </div>
               <div>
-                <span className="text-2xl font-bold text-white">ZeroQ</span>
-                <span className="block text-xs text-slate-400">Organization Portal</span>
+                <span className="text-3xl font-light text-stone-800 tracking-tight">ZeroQ</span>
+                <span className="block text-xs text-stone-500 font-light">Organization Portal</span>
               </div>
             </button>
 
             <div className="flex items-center gap-4">
-              <button className="p-2 hover:bg-white/10 rounded-xl transition-colors">
-                <Settings className="w-6 h-6 text-slate-400" />
+              <button className="p-3 hover:bg-white/60 rounded-2xl transition-all duration-500 hover:shadow-lg">
+                <Settings className="w-6 h-6 text-stone-500" />
               </button>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600" />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-300 to-amber-300 shadow-lg" />
             </div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Tabs */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="flex gap-4 bg-white/5 p-2 rounded-2xl backdrop-blur-sm border border-white/10">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="flex gap-3 bg-white/60 p-2 rounded-3xl backdrop-blur-md border border-stone-200/50 shadow-lg"
+        >
           {[
             { id: 'overview', label: 'Overview', icon: LayoutDashboard },
             { id: 'queues', label: 'Manage Queues', icon: Users },
@@ -93,17 +103,17 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-2 px-8 py-4 rounded-2xl transition-all duration-500 ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-indigo-400 to-amber-400 text-white shadow-xl shadow-indigo-300/40 scale-[1.02]'
+                  : 'text-stone-500 hover:text-stone-700 hover:bg-white/40'
               }`}
             >
               <tab.icon className="w-5 h-5" />
-              <span className="font-semibold">{tab.label}</span>
+              <span className="font-light tracking-wide">{tab.label}</span>
             </button>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Content */}
@@ -112,48 +122,54 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
           {activeTab === 'overview' && (
             <motion.div
               key="overview"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-6"
             >
               {/* Stats Grid */}
               <div className="grid md:grid-cols-4 gap-6">
                 {[
-                  { label: 'Active Queues', value: '4', icon: Activity, color: 'purple', change: '+12%' },
-                  { label: 'People in Queue', value: '39', icon: Users, color: 'blue', change: '+8%' },
-                  { label: 'Avg Wait Time', value: '24min', icon: Clock, color: 'yellow', change: '-15%' },
-                  { label: 'Served Today', value: '172', icon: CheckCircle2, color: 'green', change: '+23%' },
+                  { label: 'Active Queues', value: '4', icon: Activity, gradient: 'from-rose-300 to-rose-400', change: '+12%' },
+                  { label: 'People in Queue', value: '39', icon: Users, gradient: 'from-indigo-300 to-indigo-400', change: '+8%' },
+                  { label: 'Avg Wait Time', value: '24min', icon: Clock, gradient: 'from-amber-300 to-amber-400', change: '-15%' },
+                  { label: 'Served Today', value: '172', icon: CheckCircle2, gradient: 'from-emerald-300 to-emerald-400', change: '+23%' },
                 ].map((stat, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10"
+                    transition={{ delay: i * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
                   >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-${stat.color}-600 to-${stat.color}-400 flex items-center justify-center`}>
-                        <stat.icon className="w-6 h-6 text-white" />
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-lg`}>
+                        <stat.icon className="w-7 h-7 text-white" />
                       </div>
-                      <div className="text-green-400 text-sm font-semibold">{stat.change}</div>
+                      <div className="text-emerald-600 text-sm font-light">{stat.change}</div>
                     </div>
-                    <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-slate-400 text-sm">{stat.label}</div>
+                    <div className="text-4xl font-light text-stone-800 mb-2">{stat.value}</div>
+                    <div className="text-stone-600 text-sm font-light">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
 
               {/* Live Queue Status */}
-              <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-light text-stone-800 flex items-center gap-3">
+                    <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
                     Live Queue Status
                   </h3>
                   <button
                     onClick={() => setShowCreateQueue(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all"
+                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-400 to-amber-400 text-white rounded-full hover:shadow-xl transition-all duration-500 hover:scale-105 shadow-lg shadow-indigo-300/40 font-light"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Create Queue</span>
@@ -161,70 +177,99 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
                 </div>
 
                 <div className="space-y-4">
-                  {queueData.map((queue, i) => (
-                    <div key={i} className="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-purple-500/30 transition-colors">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-3 h-3 rounded-full bg-${getStatusColor(queue.status)}-500 animate-pulse`} />
-                          <div>
-                            <h4 className="text-white font-semibold">{queue.name}</h4>
-                            <div className="text-sm text-slate-400 capitalize">{queue.status} Load</div>
+                  {queueData.map((queue, i) => {
+                    const statusColor = getStatusColor(queue.status);
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:border-indigo-200 transition-all duration-500 hover:shadow-lg"
+                      >
+                        <div className="flex items-center justify-between mb-6">
+                          <div className="flex items-center gap-4">
+                            <div className={`w-3 h-3 rounded-full ${statusColor.dot} animate-pulse`} />
+                            <div>
+                              <h4 className="text-stone-800 font-light text-lg">{queue.name}</h4>
+                              <div className={`text-sm text-${statusColor.text}-600 font-light capitalize`}>{queue.status} Load</div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-8">
+                            <div className="text-center">
+                              <div className="text-3xl font-light text-rose-500">{queue.active}</div>
+                              <div className="text-xs text-stone-500 font-light">In Queue</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl font-light text-indigo-500">{queue.avgWait}m</div>
+                              <div className="text-xs text-stone-500 font-light">Avg Wait</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-3xl font-light text-emerald-500">{queue.served}</div>
+                              <div className="text-xs text-stone-500 font-light">Served</div>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-6">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-purple-400">{queue.active}</div>
-                            <div className="text-xs text-slate-400">In Queue</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-400">{queue.avgWait}m</div>
-                            <div className="text-xs text-slate-400">Avg Wait</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-green-400">{queue.served}</div>
-                            <div className="text-xs text-slate-400">Served</div>
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Progress Bar */}
-                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full bg-gradient-to-r from-${getStatusColor(queue.status)}-600 to-${getStatusColor(queue.status)}-400 transition-all duration-500`}
-                          style={{ width: `${Math.min((queue.active / 20) * 100, 100)}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                        {/* Progress Bar */}
+                        <div className="h-2 bg-stone-200/50 rounded-full overflow-hidden backdrop-blur-sm">
+                          <motion.div
+                            className={`h-full bg-gradient-to-r from-${statusColor.bg}-400 to-${statusColor.bg}-500 rounded-full`}
+                            initial={{ width: '0%' }}
+                            animate={{ width: `${Math.min((queue.active / 20) * 100, 100)}%` }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                          />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Quick Insights */}
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-purple-400" />
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+                >
+                  <h3 className="text-2xl font-light text-stone-800 mb-6 flex items-center gap-3">
+                    <TrendingUp className="w-6 h-6 text-indigo-500" />
                     Peak Hours Today
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {peakHourData.slice(0, 5).map((hour, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <div className="text-slate-400 w-16">{hour.hour}</div>
-                        <div className="flex-1 h-8 bg-white/5 rounded-lg overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-end pr-3 transition-all duration-500"
-                            style={{ width: `${(hour.count / 45) * 100}%` }}
+                      <motion.div
+                        key={i}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex items-center gap-4"
+                      >
+                        <div className="text-stone-500 w-20 font-light">{hour.hour}</div>
+                        <div className="flex-1 h-10 bg-stone-200/50 rounded-2xl overflow-hidden backdrop-blur-sm">
+                          <motion.div
+                            className="h-full bg-gradient-to-r from-indigo-400 to-amber-400 flex items-center justify-end pr-4 rounded-2xl"
+                            initial={{ width: '0%' }}
+                            animate={{ width: `${(hour.count / 45) * 100}%` }}
+                            transition={{ duration: 1, delay: 0.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                           >
-                            <span className="text-white text-sm font-semibold">{hour.count}</span>
-                          </div>
+                            <span className="text-white text-sm font-light">{hour.count}</span>
+                          </motion.div>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <h3 className="text-xl font-semibold text-white mb-4">AI Recommendations</h3>
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+                >
+                  <h3 className="text-2xl font-light text-stone-800 mb-6">AI Recommendations</h3>
                   <div className="space-y-4">
                     {[
                       {
@@ -232,48 +277,41 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
                         icon: AlertCircle,
                         title: 'High Load Detected',
                         desc: 'License Renewal queue needs +2 staff members',
+                        bg: 'amber',
                       },
                       {
                         type: 'success',
                         icon: CheckCircle2,
                         title: 'Optimal Performance',
                         desc: 'COVID Vaccination running efficiently',
+                        bg: 'emerald',
                       },
                       {
                         type: 'info',
                         icon: TrendingUp,
                         title: 'Peak Hour Alert',
                         desc: 'Expect surge at 10AM - prepare resources',
+                        bg: 'indigo',
                       },
                     ].map((rec, i) => (
-                      <div key={i} className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
-                        <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            rec.type === 'warning'
-                              ? 'bg-yellow-500/20'
-                              : rec.type === 'success'
-                              ? 'bg-green-500/20'
-                              : 'bg-blue-500/20'
-                          }`}
-                        >
-                          <rec.icon
-                            className={`w-5 h-5 ${
-                              rec.type === 'warning'
-                                ? 'text-yellow-400'
-                                : rec.type === 'success'
-                                ? 'text-green-400'
-                                : 'text-blue-400'
-                            }`}
-                          />
+                      <motion.div
+                        key={i}
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex items-start gap-4 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:shadow-lg transition-all duration-500"
+                      >
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-${rec.bg}-200 to-${rec.bg}-300 shadow-lg`}>
+                          <rec.icon className={`w-6 h-6 text-${rec.bg}-600`} />
                         </div>
                         <div>
-                          <div className="text-white font-semibold mb-1">{rec.title}</div>
-                          <div className="text-sm text-slate-400">{rec.desc}</div>
+                          <div className="text-stone-800 font-light mb-1">{rec.title}</div>
+                          <div className="text-sm text-stone-600 font-light">{rec.desc}</div>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           )}
@@ -281,16 +319,17 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
           {activeTab === 'queues' && (
             <motion.div
               key="queues"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-6"
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold text-white">Queue Management</h2>
+                <h2 className="text-4xl font-light text-stone-800">Queue Management</h2>
                 <button
                   onClick={() => setShowCreateQueue(true)}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all"
+                  className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-400 to-amber-400 text-white rounded-full hover:shadow-xl transition-all duration-500 hover:scale-105 shadow-lg shadow-indigo-300/40 font-light"
                 >
                   <Plus className="w-5 h-5" />
                   <span>Create New Queue</span>
@@ -298,46 +337,55 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                {queueData.map((queue, i) => (
-                  <div key={i} className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                    <div className="flex items-center justify-between mb-6">
-                      <div>
-                        <h3 className="text-xl font-semibold text-white mb-2">{queue.name}</h3>
-                        <div className={`inline-flex items-center gap-2 px-3 py-1 bg-${getStatusColor(queue.status)}-500/20 border border-${getStatusColor(queue.status)}-500/30 rounded-full`}>
-                          <div className={`w-2 h-2 rounded-full bg-${getStatusColor(queue.status)}-500 animate-pulse`} />
-                          <span className={`text-${getStatusColor(queue.status)}-300 text-sm capitalize`}>{queue.status}</span>
+                {queueData.map((queue, i) => {
+                  const statusColor = getStatusColor(queue.status);
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                      className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-700"
+                    >
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h3 className="text-2xl font-light text-stone-800 mb-3">{queue.name}</h3>
+                          <div className={`inline-flex items-center gap-2 px-4 py-2 bg-${statusColor.bg}-100/60 backdrop-blur-sm border border-${statusColor.bg}-200/50 rounded-full`}>
+                            <div className={`w-2 h-2 rounded-full ${statusColor.dot} animate-pulse`} />
+                            <span className={`text-${statusColor.text}-600 text-sm font-light capitalize`}>{queue.status}</span>
+                          </div>
+                        </div>
+                        <button className="p-3 hover:bg-white/60 rounded-2xl transition-all duration-500">
+                          <Settings className="w-5 h-5 text-stone-500" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4 mb-8">
+                        <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50">
+                          <div className="text-3xl font-light text-rose-500 mb-2">{queue.active}</div>
+                          <div className="text-xs text-stone-600 font-light">Active</div>
+                        </div>
+                        <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50">
+                          <div className="text-3xl font-light text-indigo-500 mb-2">{queue.avgWait}m</div>
+                          <div className="text-xs text-stone-600 font-light">Avg Wait</div>
+                        </div>
+                        <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-stone-200/50">
+                          <div className="text-3xl font-light text-emerald-500 mb-2">{queue.served}</div>
+                          <div className="text-xs text-stone-600 font-light">Served</div>
                         </div>
                       </div>
-                      <button className="p-2 hover:bg-white/10 rounded-xl transition-colors">
-                        <Settings className="w-5 h-5 text-slate-400" />
-                      </button>
-                    </div>
 
-                    <div className="grid grid-cols-3 gap-4 mb-6">
-                      <div className="text-center p-4 bg-white/5 rounded-xl">
-                        <div className="text-2xl font-bold text-purple-400 mb-1">{queue.active}</div>
-                        <div className="text-xs text-slate-400">Active</div>
+                      <div className="flex gap-3">
+                        <button className="flex-1 py-3 bg-white/60 hover:bg-white/80 backdrop-blur-sm text-stone-700 rounded-2xl transition-all duration-500 border border-stone-200/50 font-light hover:shadow-lg">
+                          View Details
+                        </button>
+                        <button className="flex-1 py-3 bg-gradient-to-r from-indigo-400 to-amber-400 hover:shadow-xl text-white rounded-2xl transition-all duration-500 font-light hover:scale-[1.02]">
+                          Manage
+                        </button>
                       </div>
-                      <div className="text-center p-4 bg-white/5 rounded-xl">
-                        <div className="text-2xl font-bold text-blue-400 mb-1">{queue.avgWait}m</div>
-                        <div className="text-xs text-slate-400">Avg Wait</div>
-                      </div>
-                      <div className="text-center p-4 bg-white/5 rounded-xl">
-                        <div className="text-2xl font-bold text-green-400 mb-1">{queue.served}</div>
-                        <div className="text-xs text-slate-400">Served</div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <button className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-colors">
-                        View Details
-                      </button>
-                      <button className="flex-1 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-lg text-white rounded-xl transition-all">
-                        Manage
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </motion.div>
           )}
@@ -345,169 +393,186 @@ export function OrganizationDashboard({ onBack }: OrganizationDashboardProps) {
           {activeTab === 'analytics' && (
             <motion.div
               key="analytics"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold text-white">Analytics & Insights</h2>
+              <h2 className="text-4xl font-light text-stone-800">Analytics & Insights</h2>
 
               {/* Peak Hours Chart */}
-              <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-6">Queue Volume by Hour</h3>
-                <div className="h-64 flex items-end gap-2">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+              >
+                <h3 className="text-2xl font-light text-stone-800 mb-8">Queue Volume by Hour</h3>
+                <div className="h-64 flex items-end gap-3">
                   {peakHourData.map((hour, i) => (
-                    <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                    <div key={i} className="flex-1 flex flex-col items-center gap-3">
                       <div className="w-full relative group">
-                        <div
-                          className="w-full bg-gradient-to-t from-purple-600 to-blue-600 rounded-t-lg transition-all duration-300 hover:from-purple-500 hover:to-blue-500 cursor-pointer"
-                          style={{ height: `${(hour.count / 45) * 240}px` }}
+                        <motion.div
+                          className="w-full bg-gradient-to-t from-indigo-400 to-amber-400 rounded-t-2xl transition-all duration-500 hover:from-indigo-500 hover:to-amber-500 cursor-pointer"
+                          initial={{ height: 0 }}
+                          animate={{ height: `${(hour.count / 45) * 240}px` }}
+                          transition={{ duration: 1, delay: 0.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                         >
-                          <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3 py-2 rounded-xl text-stone-800 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap border border-stone-200/50 shadow-lg font-light">
                             {hour.count} people
                           </div>
-                        </div>
+                        </motion.div>
                       </div>
-                      <div className="text-xs text-slate-400">{hour.hour}</div>
+                      <div className="text-xs text-stone-500 font-light">{hour.hour}</div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Performance Metrics */}
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-600 to-green-400 flex items-center justify-center">
-                      <CheckCircle2 className="w-6 h-6 text-white" />
+                {[
+                  { icon: CheckCircle2, label: 'Service Rate', value: '94.2%', change: '+5.3%', gradient: 'from-emerald-300 to-emerald-400' },
+                  { icon: Clock, label: 'Abandonment Rate', value: '3.8%', change: '-1.2%', gradient: 'from-amber-300 to-amber-400' },
+                  { icon: TrendingUp, label: 'Customer Satisfaction', value: '4.7/5', change: '+0.3', gradient: 'from-rose-300 to-rose-400' },
+                ].map((metric, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 + i * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+                  >
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${metric.gradient} flex items-center justify-center shadow-lg`}>
+                        <metric.icon className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <div className="text-stone-600 text-sm font-light">{metric.label}</div>
+                        <div className="text-3xl font-light text-stone-800">{metric.value}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-slate-400 text-sm">Service Rate</div>
-                      <div className="text-2xl font-bold text-white">94.2%</div>
-                    </div>
-                  </div>
-                  <div className="text-sm text-green-400">+5.3% from last week</div>
-                </div>
-
-                <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-600 to-yellow-400 flex items-center justify-center">
-                      <Clock className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <div className="text-slate-400 text-sm">Abandonment Rate</div>
-                      <div className="text-2xl font-bold text-white">3.8%</div>
-                    </div>
-                  </div>
-                  <div className="text-sm text-green-400">-1.2% from last week</div>
-                </div>
-
-                <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-purple-400 flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <div className="text-slate-400 text-sm">Customer Satisfaction</div>
-                      <div className="text-2xl font-bold text-white">4.7/5</div>
-                    </div>
-                  </div>
-                  <div className="text-sm text-green-400">+0.3 from last week</div>
-                </div>
+                    <div className="text-sm text-emerald-600 font-light">{metric.change} from last week</div>
+                  </motion.div>
+                ))}
               </div>
 
               {/* Weekly Trends */}
-              <div className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-6">Weekly Trends</h3>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-stone-200/50 shadow-lg"
+              >
+                <h3 className="text-2xl font-light text-stone-800 mb-8">Weekly Trends</h3>
                 <div className="space-y-4">
                   {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, i) => {
                     const value = [145, 162, 158, 171, 189, 95, 67][i];
                     return (
-                      <div key={i} className="flex items-center gap-4">
-                        <div className="text-slate-400 w-24">{day}</div>
-                        <div className="flex-1 h-10 bg-white/5 rounded-lg overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-end pr-4 transition-all duration-500"
-                            style={{ width: `${(value / 200) * 100}%` }}
+                      <motion.div
+                        key={i}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex items-center gap-5"
+                      >
+                        <div className="text-stone-600 w-28 font-light">{day}</div>
+                        <div className="flex-1 h-12 bg-stone-200/50 rounded-2xl overflow-hidden backdrop-blur-sm">
+                          <motion.div
+                            className="h-full bg-gradient-to-r from-indigo-400 to-amber-400 flex items-center justify-end pr-5 rounded-2xl"
+                            initial={{ width: '0%' }}
+                            animate={{ width: `${(value / 200) * 100}%` }}
+                            transition={{ duration: 1, delay: 0.8 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                           >
-                            <span className="text-white font-semibold">{value}</span>
-                          </div>
+                            <span className="text-white font-light">{value}</span>
+                          </motion.div>
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       {/* Create Queue Modal */}
-      {showCreateQueue && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+      <AnimatePresence>
+        {showCreateQueue && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-lg p-8 bg-slate-900 rounded-2xl border border-white/10 shadow-2xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/30 backdrop-blur-sm"
           >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-white">Create New Queue</h3>
-              <button
-                onClick={() => setShowCreateQueue(false)}
-                className="p-2 hover:bg-white/10 rounded-xl transition-colors"
-              >
-                <XCircle className="w-6 h-6 text-slate-400" />
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-slate-400 mb-2">Queue Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g., General Consultation"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-400 mb-2">Category</label>
-                <select className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-500/50">
-                  <option>Healthcare</option>
-                  <option>Banking</option>
-                  <option>Government</option>
-                  <option>Retail</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-slate-400 mb-2">Expected Service Time (minutes)</label>
-                <input
-                  type="number"
-                  placeholder="15"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50"
-                />
-              </div>
-
-              <div className="flex gap-3 pt-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-lg p-10 bg-white/90 backdrop-blur-2xl rounded-[2.5rem] border border-white/60 shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-3xl font-light text-stone-800">Create New Queue</h3>
                 <button
                   onClick={() => setShowCreateQueue(false)}
-                  className="flex-1 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-colors"
+                  className="p-2 hover:bg-stone-100/60 rounded-2xl transition-all duration-500"
                 >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setShowCreateQueue(false)}
-                  className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-lg text-white rounded-xl transition-all"
-                >
-                  Create Queue
+                  <XCircle className="w-6 h-6 text-stone-500" />
                 </button>
               </div>
-            </div>
+
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-stone-600 mb-3 font-light">Queue Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., General Consultation"
+                    className="w-full px-5 py-4 bg-white/70 backdrop-blur-md border border-stone-200/50 rounded-2xl text-stone-800 placeholder:text-stone-400 focus:outline-none focus:border-indigo-300 focus:shadow-lg transition-all duration-500 font-light"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-stone-600 mb-3 font-light">Category</label>
+                  <select className="w-full px-5 py-4 bg-white/70 backdrop-blur-md border border-stone-200/50 rounded-2xl text-stone-800 focus:outline-none focus:border-indigo-300 focus:shadow-lg transition-all duration-500 font-light">
+                    <option>Healthcare</option>
+                    <option>Banking</option>
+                    <option>Government</option>
+                    <option>Retail</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-stone-600 mb-3 font-light">Expected Service Time (minutes)</label>
+                  <input
+                    type="number"
+                    placeholder="15"
+                    className="w-full px-5 py-4 bg-white/70 backdrop-blur-md border border-stone-200/50 rounded-2xl text-stone-800 placeholder:text-stone-400 focus:outline-none focus:border-indigo-300 focus:shadow-lg transition-all duration-500 font-light"
+                  />
+                </div>
+
+                <div className="flex gap-4 pt-6">
+                  <button
+                    onClick={() => setShowCreateQueue(false)}
+                    className="flex-1 py-4 bg-white/70 hover:bg-white/90 backdrop-blur-md text-stone-700 rounded-2xl transition-all duration-500 border border-stone-200/50 font-light hover:shadow-lg"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => setShowCreateQueue(false)}
+                    className="flex-1 py-4 bg-gradient-to-r from-indigo-400 to-amber-400 hover:shadow-xl text-white rounded-2xl transition-all duration-500 font-light hover:scale-[1.02]"
+                  >
+                    Create Queue
+                  </button>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }
