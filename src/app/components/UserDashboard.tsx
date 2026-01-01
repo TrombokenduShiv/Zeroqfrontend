@@ -25,6 +25,7 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
   const [position, setPosition] = useState(0);
   const [eta, setEta] = useState(0);
   const [tokens, setTokens] = useState(127);
+  const [myTicket, setMyTicket] = useState<{ id: string } | null>(null); // <-- Add this line
 
   const queues: Queue[] = [
     {
@@ -76,6 +77,17 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
       q.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleCheckIn = async (scannedQrToken: string) => {
+    if (!myTicket || !selectedQueue) return; // Guard clause
+    const payload = {
+        ticketId: myTicket.id,
+        queueId: selectedQueue.id,
+        qrToken: scannedQrToken
+    };
+    // Call backend...
+    // If success -> Update UI to show "Verified - Green Status"
+  };
+
   useEffect(() => {
     if (joined) {
       const interval = setInterval(() => {
@@ -100,6 +112,7 @@ export function UserDashboard({ onBack }: UserDashboardProps) {
     setEta(queue.currentWait);
     setJoined(true);
     setActiveTab('active');
+    setMyTicket({ id: Math.random().toString(36).substr(2, 9) }); // <-- Generate a ticket id
   };
 
   return (
